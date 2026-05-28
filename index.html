@@ -1,59 +1,652 @@
 <!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dummy Site</title>
-    <meta
-      name="description"
-      content="Простой dummy-сайт для быстрого деплоя через GitHub Pages."
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <main class="page">
-      <section class="hero">
-        <p class="eyebrow">GitHub Pages Demo</p>
-        <h1>Очень простой dummy site</h1>
-        <p class="lead">
-          Заглушка для тестового деплоя. Можно сразу заливать в репозиторий и
-          публиковать как статический сайт без сборки.
-        </p>
-        <div class="actions">
-          <a class="button primary" href="mailto:hello@example.com">Написать</a>
-          <a class="button secondary" href="#about">Что внутри</a>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mikhail — AI & Quantitative Finance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+[data-theme="dark"] {
+  --bg:        #0a0a0a;
+  --bg-alt:    #111111;
+  --bg-card:   #0e0e0e;
+  --fg:        #f2f0ec;
+  --fg-mid:    #c4c0ba;
+  --muted:     #8a8a8a;
+  --muted-lt:  #4a4a46;
+  --gold:      #b8975a;
+  --gold-lt:   #d4b07a;
+  --line:      rgba(255,255,255,0.07);
+  --line-lt:   rgba(255,255,255,0.03);
+  --nav-bg:    rgba(10,10,10,0.96);
+  --marquee-bg:#0d0d0d;
+  --quote-bg:  #f2f0ec;
+  --quote-fg:  #1a1814;
+  --quote-sub: #8a6d3b;
+  --btn-bg:    #f2f0ec;
+  --btn-fg:    #0a0a0a;
+  --footer-bg: #0d0d0d;
+  --tag-bg:    #111;
+}
+[data-theme="light"] {
+  --bg:        #faf9f7;
+  --bg-alt:    #f5f2ed;
+  --bg-card:   #faf9f7;
+  --fg:        #1a1814;
+  --fg-mid:    #3d3a35;
+  --muted:     #8c887f;
+  --muted-lt:  #c0bcb5;
+  --gold:      #8a6d3b;
+  --gold-lt:   #c4a265;
+  --line:      rgba(26,24,20,0.09);
+  --line-lt:   rgba(26,24,20,0.04);
+  --nav-bg:    rgba(250,249,247,0.97);
+  --marquee-bg:#f5f2ed;
+  --quote-bg:  #1a1814;
+  --quote-fg:  #f5f2ed;
+  --quote-sub: #c4a265;
+  --btn-bg:    #1a1814;
+  --btn-fg:    #faf9f7;
+  --footer-bg: #f0ede8;
+  --tag-bg:    #faf9f7;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: 14px; letter-spacing: 0.02em;
+  cursor: none; overflow-x: hidden;
+  transition: background .45s, color .45s;
+}
+
+/* CURSOR */
+.cursor { position:fixed;width:5px;height:5px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%); }
+.cursor-ring { position:fixed;width:34px;height:34px;border:1px solid rgba(184,151,90,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .18s,height .18s,border-color .18s; }
+.cursor-ring.h { width:50px;height:50px;border-color:var(--gold); }
+
+/* NOISE */
+body::before { content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:.4; }
+
+/* ── NAV ─────────────────────────────── */
+nav {
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:24px 52px;
+  background:var(--nav-bg);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+  transition:background .45s,border-color .45s;
+}
+.nav-logo { font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;letter-spacing:.18em;color:var(--fg);text-decoration:none;transition:color .3s; }
+.nav-links { display:flex;gap:40px;list-style:none; }
+.nav-links a { color:var(--muted);text-decoration:none;font-size:10px;letter-spacing:.22em;text-transform:uppercase;transition:color .25s; }
+.nav-links a:hover { color:var(--fg); }
+.nav-controls { display:flex;align-items:center;gap:16px; }
+
+/* lang toggle */
+.lang-toggle { display:flex;border:1px solid var(--line);overflow:hidden;transition:border-color .45s; }
+.lang-btn { padding:6px 13px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);background:transparent;border:none;cursor:none;transition:all .22s; }
+.lang-btn.on { background:var(--gold);color:var(--bg); }
+.lang-btn:hover:not(.on) { color:var(--fg); }
+
+/* theme toggle */
+.theme-btn { width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--line);cursor:none;transition:border-color .25s; }
+.theme-btn:hover { border-color:var(--gold); }
+.ti { width:16px;height:16px;position:relative; }
+.ti svg { position:absolute;inset:0;transition:opacity .3s,transform .3s; }
+[data-theme="dark"]  .i-sun  { opacity:1;transform:rotate(0); }
+[data-theme="dark"]  .i-moon { opacity:0;transform:rotate(40deg); }
+[data-theme="light"] .i-sun  { opacity:0;transform:rotate(-40deg); }
+[data-theme="light"] .i-moon { opacity:1;transform:rotate(0); }
+
+/* ── HERO ───────────────────────────── */
+.hero {
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+  align-items:end;padding:0 52px 88px;position:relative;overflow:hidden;
+}
+.hero-geo { position:absolute;top:10%;right:6%;width:400px;height:500px;border:1px solid var(--line);transform:rotate(3deg);pointer-events:none;transition:border-color .45s; }
+.hero-geo2 { position:absolute;top:14%;right:10%;width:320px;height:400px;border:1px solid var(--line-lt);transform:rotate(-1.5deg);pointer-events:none;transition:border-color .45s; }
+.hero-vline { position:absolute;top:0;right:215px;width:1px;height:42%;background:linear-gradient(to bottom,transparent,var(--gold-lt),transparent);animation:vIn 2s ease .5s both; }
+@keyframes vIn { from{opacity:0;transform:scaleY(0);transform-origin:top} to{opacity:.28;transform:scaleY(1)} }
+
+.hero-eye { display:flex;align-items:center;gap:16px;margin-bottom:28px;opacity:0;animation:up 1s ease .3s both; }
+.hero-eye-line { width:32px;height:1px;background:var(--gold); }
+.hero-eye-text { font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold); }
+
+.hero-name { font-family:'Cormorant Garamond',serif;font-size:clamp(56px,7vw,100px);font-weight:300;line-height:.9;letter-spacing:-.015em;color:var(--fg);opacity:0;animation:up 1s ease .5s both;transition:color .45s; }
+.hero-name em { font-style:italic;color:var(--muted);display:block;transition:color .45s; }
+
+.hero-r { display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:4px;opacity:0;animation:up 1s ease .8s both; }
+.hero-desc { color:var(--muted);font-size:14px;line-height:1.9;max-width:380px;margin-bottom:40px;transition:color .45s; }
+.hero-acts { display:flex;gap:28px;align-items:center; }
+
+.btn-main { display:inline-flex;align-items:center;background:var(--btn-bg);color:var(--btn-fg);padding:14px 32px;font-size:10px;font-weight:300;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;cursor:none;transition:background .45s,color .45s;position:relative;overflow:hidden; }
+.btn-main::after { content:'';position:absolute;inset:0;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .35s ease; }
+.btn-main:hover::after { transform:scaleX(1); }
+.btn-main span { position:relative;z-index:1; }
+.btn-ghost { color:var(--muted);font-size:10px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;cursor:none;transition:color .25s; }
+.btn-ghost:hover { color:var(--fg); }
+
+.hero-scroll { position:absolute;bottom:44px;left:52px;display:flex;align-items:center;gap:12px;opacity:0;animation:up 1s ease 1.2s both; }
+.scroll-ln { width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:.35} 50%{opacity:1} }
+.scroll-tx { font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted-lt);writing-mode:vertical-rl;transform:rotate(180deg);transition:color .45s; }
+
+@keyframes up { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── MARQUEE ────────────────────────── */
+.mq-wrap { border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding:17px 0;background:var(--marquee-bg);transition:background .45s,border-color .45s; }
+.mq-track { display:flex;animation:mq 24s linear infinite;width:max-content; }
+.mq-item { display:flex;align-items:center;gap:28px;padding:0 28px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);white-space:nowrap;transition:color .45s; }
+.mq-dot { width:4px;height:4px;background:var(--gold-lt);border-radius:50%;flex-shrink:0; }
+@keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── SECTION COMMONS ────────────────── */
+section { padding:100px 52px; }
+.sh { display:flex;align-items:baseline;gap:24px;margin-bottom:64px;border-bottom:1px solid var(--line);padding-bottom:24px;transition:border-color .45s; }
+.sn { font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--gold);letter-spacing:.08em; }
+.st { font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.5vw,50px);font-weight:300;letter-spacing:.01em;color:var(--fg);transition:color .45s; }
+
+/* ── EXPERTISE ──────────────────────── */
+.exp-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);transition:background .45s; }
+.exp-card { background:var(--bg-card);padding:44px 36px;position:relative;transition:background .35s; }
+.exp-card:hover { background:var(--bg-alt); }
+.exp-card::after { content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s; }
+.exp-card:hover::after { transform:scaleX(1); }
+.cn { font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--line);line-height:1;margin-bottom:20px;transition:color .45s; }
+.cl { font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:12px; }
+.ct { font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--fg);margin-bottom:14px;line-height:1.2;transition:color .45s; }
+.cd { color:var(--muted);line-height:1.85;font-size:13px;transition:color .45s; }
+.tags { margin-top:22px;display:flex;flex-wrap:wrap;gap:6px; }
+.tag { font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:4px 10px;background:var(--tag-bg);transition:background .45s,border-color .45s,color .45s; }
+
+/* ── PROJECTS ───────────────────────── */
+.proj-list { display:flex;flex-direction:column; }
+.proj-item { display:grid;grid-template-columns:64px 1fr 180px 48px;align-items:center;gap:32px;padding:32px 52px;margin:0 -52px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;cursor:none;transition:background .25s,border-color .45s; }
+.proj-item:first-child { border-top:1px solid var(--line); }
+.proj-item:hover { background:var(--bg-alt); }
+.pn { font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--muted-lt);letter-spacing:.08em; }
+.pt { font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--fg);margin-bottom:4px;transition:color .25s; }
+.proj-item:hover .pt { color:var(--gold); }
+.pd { font-size:12px;color:var(--muted);letter-spacing:.04em;line-height:1.6;transition:color .45s; }
+.py { font-size:10px;letter-spacing:.15em;color:var(--muted-lt);text-align:right;transition:color .45s; }
+.pbadge { font-size:9px;letter-spacing:.12em;color:var(--gold);text-align:right;margin-top:4px; }
+.parr { font-size:20px;color:var(--muted-lt);text-align:right;transition:color .25s,transform .25s; }
+.proj-item:hover .parr { color:var(--gold);transform:translateX(4px); }
+
+/* ── PRESS ──────────────────────────── */
+
+/* Featured hero card */
+.press-hero {
+  display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:2px;
+}
+.press-hero-main {
+  background:var(--bg-alt);padding:52px 48px;
+  text-decoration:none;color:inherit;cursor:none;
+  border:1px solid var(--line);position:relative;overflow:hidden;
+  transition:background .3s,border-color .45s;
+  display:flex;flex-direction:column;
+}
+.press-hero-main::after { content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s; }
+.press-hero-main:hover::after { transform:scaleX(1); }
+.ph-label { font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px; }
+.ph-label::before { content:'';display:block;width:20px;height:1px;background:var(--gold); }
+.ph-source { font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;transition:color .45s; }
+.ph-title { font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.4vw,32px);font-weight:400;line-height:1.25;color:var(--fg);margin-bottom:20px;flex:1;transition:color .25s; }
+.press-hero-main:hover .ph-title { color:var(--gold-lt); }
+.ph-quote { font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:var(--muted);line-height:1.7;margin-bottom:28px;padding-left:18px;border-left:1px solid var(--gold);transition:color .45s,border-color .45s; }
+.ph-foot { display:flex;justify-content:space-between;align-items:center; }
+.ph-date { font-size:10px;letter-spacing:.15em;color:var(--muted-lt);transition:color .45s; }
+.ph-arr { font-size:20px;color:var(--gold); }
+.press-hero-side { display:flex;flex-direction:column;gap:2px; }
+.press-side-card { flex:1;background:var(--bg-card);padding:28px 32px;text-decoration:none;color:inherit;cursor:none;border:1px solid var(--line);transition:background .3s,border-color .45s;display:flex;flex-direction:column;justify-content:space-between; }
+.press-side-card:hover { background:var(--bg-alt); }
+.psc-source { font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px; }
+.psc-title { font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--fg);line-height:1.3;flex:1;margin-bottom:14px;transition:color .25s; }
+.press-side-card:hover .psc-title { color:var(--gold-lt); }
+.psc-foot { display:flex;justify-content:space-between;align-items:center; }
+.psc-date { font-size:10px;color:var(--muted-lt);letter-spacing:.1em;transition:color .45s; }
+.psc-type { font-size:8px;letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--line);padding:3px 8px;color:var(--muted);transition:border-color .45s,color .45s; }
+
+/* Cards grid */
+.press-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);margin-top:2px;transition:background .45s; }
+.press-grid-card { background:var(--bg-card);padding:32px 28px;text-decoration:none;color:inherit;cursor:none;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;transition:background .3s;border:1px solid var(--line);transition:background .3s,border-color .45s; }
+.press-grid-card:hover { background:var(--bg-alt); }
+.press-grid-card::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s; }
+.press-grid-card:hover::before { transform:scaleX(1); }
+.pgc-top { display:flex;justify-content:space-between;align-items:center; }
+.pgc-source { font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold); }
+.pgc-type { font-size:8px;letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--line);padding:3px 8px;color:var(--muted);transition:border-color .45s,color .45s; }
+.pgc-title { font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--fg);line-height:1.3;flex:1;transition:color .25s; }
+.press-grid-card:hover .pgc-title { color:var(--gold-lt); }
+.pgc-bot { display:flex;justify-content:space-between;align-items:center;margin-top:auto; }
+.pgc-date { font-size:10px;color:var(--muted-lt);letter-spacing:.1em;transition:color .45s; }
+.pgc-arr { font-size:16px;color:var(--gold);opacity:0;transform:translateX(-6px);transition:all .3s; }
+.press-grid-card:hover .pgc-arr { opacity:1;transform:translateX(0); }
+
+/* Show more */
+.press-more-wrap { text-align:center;margin-top:32px; }
+.press-more-btn { display:inline-flex;align-items:center;gap:12px;background:transparent;border:1px solid var(--line);color:var(--muted);padding:14px 36px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;cursor:none;transition:all .25s; }
+.press-more-btn:hover { border-color:var(--gold);color:var(--fg); }
+.press-more-btn.hidden { display:none; }
+.press-grid-card.hidden { display:none; }
+
+/* ── QUOTE ──────────────────────────── */
+.quote-s { background:var(--quote-bg);padding:100px 52px;text-align:center;transition:background .45s; }
+.quote-t { font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3.5vw,46px);font-weight:300;font-style:italic;color:var(--quote-fg);line-height:1.4;max-width:760px;margin:0 auto 28px;transition:color .45s; }
+.quote-a { font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--quote-sub); }
+
+/* ── EXPERIENCE ─────────────────────── */
+.xp-grid { display:grid;grid-template-columns:280px 1fr;gap:80px; }
+.xp-label { font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-lt);margin-bottom:20px;transition:color .45s; }
+.xp-sum { color:var(--muted);font-size:14px;line-height:1.9;transition:color .45s; }
+.xp-list { display:flex;flex-direction:column; }
+.xp-item { display:grid;grid-template-columns:120px 1fr;gap:32px;padding:36px 0;border-bottom:1px solid var(--line);transition:border-color .45s; }
+.xp-item:first-child { border-top:1px solid var(--line); }
+.xp-per { font-size:10px;letter-spacing:.15em;color:var(--muted-lt);padding-top:6px;line-height:1.7;transition:color .45s; }
+.xp-role { font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--fg);margin-bottom:4px;transition:color .45s; }
+.xp-co { font-size:11px;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:12px; }
+.xp-desc { color:var(--muted);font-size:13px;line-height:1.85;max-width:500px;transition:color .45s; }
+
+/* ── CONTACT ────────────────────────── */
+.ct-s { padding:100px 52px;display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:start;border-top:1px solid var(--line);transition:border-color .45s; }
+.ct-h { font-family:'Cormorant Garamond',serif;font-size:clamp(38px,4.5vw,64px);font-weight:300;line-height:1.1;color:var(--fg);margin-bottom:28px;transition:color .45s; }
+.ct-h em { font-style:italic;color:var(--muted);transition:color .45s; }
+.ct-note { color:var(--muted);font-size:13px;line-height:1.85;transition:color .45s; }
+.ct-links { display:flex;flex-direction:column; }
+.ct-link { display:flex;justify-content:space-between;align-items:center;padding:22px 16px;border-bottom:1px solid var(--line);margin:0 -16px;text-decoration:none;color:var(--fg);cursor:none;transition:padding-left .3s,background .25s,border-color .45s; }
+.ct-link:first-child { border-top:1px solid var(--line); }
+.ct-link:hover { background:var(--bg-alt);padding-left:28px; }
+.ct-lbl { font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-lt);margin-bottom:5px;transition:color .45s; }
+.ct-val { font-size:15px;letter-spacing:.02em;color:var(--fg-mid);transition:color .45s; }
+.ct-arr { font-size:18px;color:var(--muted-lt);transition:color .25s,transform .25s; }
+.ct-link:hover .ct-arr { color:var(--gold);transform:translateX(4px); }
+
+/* ── FOOTER ─────────────────────────── */
+footer { padding:28px 52px;border-top:1px solid var(--line);background:var(--footer-bg);display:flex;justify-content:space-between;align-items:center;transition:background .45s,border-color .45s; }
+.fc { font-size:10px;color:var(--muted-lt);letter-spacing:.15em;transition:color .45s; }
+.fl { font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:.2em;color:var(--muted); }
+.fr { font-size:10px;color:var(--muted-lt);letter-spacing:.12em;transition:color .45s; }
+
+/* ── REVEAL ─────────────────────────── */
+.rv { opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease; }
+.rv.vis { opacity:1;transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="C"></div>
+<div class="cursor-ring" id="R"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">M · K</a>
+  <ul class="nav-links">
+    <li><a href="#expertise" data-i="nav.exp">Expertise</a></li>
+    <li><a href="#projects"  data-i="nav.proj">Projects</a></li>
+    <li><a href="#press"     data-i="nav.press">Press</a></li>
+    <li><a href="#experience" data-i="nav.xp">Experience</a></li>
+    <li><a href="#contact"   data-i="nav.ct">Contact</a></li>
+  </ul>
+  <div class="nav-controls">
+    <div class="lang-toggle">
+      <button class="lang-btn on" data-lb="en">EN</button>
+      <button class="lang-btn"    data-lb="ru">RU</button>
+    </div>
+    <button class="theme-btn" id="TB">
+      <div class="ti">
+        <svg class="i-sun" viewBox="0 0 16 16" fill="none" stroke="var(--gold)" stroke-width="1.2"><circle cx="8" cy="8" r="3"/><line x1="8" y1="1" x2="8" y2="3"/><line x1="8" y1="13" x2="8" y2="15"/><line x1="1" y1="8" x2="3" y2="8"/><line x1="13" y1="8" x2="15" y2="8"/><line x1="3.5" y1="3.5" x2="4.9" y2="4.9"/><line x1="11.1" y1="11.1" x2="12.5" y2="12.5"/><line x1="12.5" y1="3.5" x2="11.1" y2="4.9"/><line x1="4.9" y1="11.1" x2="3.5" y2="12.5"/></svg>
+        <svg class="i-moon" viewBox="0 0 16 16" fill="none" stroke="var(--gold)" stroke-width="1.2"><path d="M13 10A6 6 0 0 1 6 3a6 6 0 1 0 7 7z"/></svg>
+      </div>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-geo"></div><div class="hero-geo2"></div><div class="hero-vline"></div>
+  <div>
+    <div class="hero-eye"><div class="hero-eye-line"></div><span class="hero-eye-text" data-i="hero.eye">AI Product · Quant Finance · Risk</span></div>
+    <h1 class="hero-name">Mikhail<br><em>Korobeynikov</em></h1>
+  </div>
+  <div class="hero-r">
+    <p class="hero-desc" data-i="hero.desc">Building intelligent risk systems at the intersection of quantitative finance and applied AI. Currently leading AI product development at T-Bank, Moscow.</p>
+    <div class="hero-acts">
+      <a href="#projects" class="btn-main"><span data-i="hero.cta1">View Work</span></a>
+      <a href="#contact"  class="btn-ghost" data-i="hero.cta2">Get in Touch →</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="scroll-ln"></div><span class="scroll-tx" data-i="hero.scroll">Scroll</span></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq-wrap"><div class="mq-track" id="MQ"></div></div>
+
+<!-- EXPERTISE -->
+<section id="expertise">
+  <div class="sh rv"><span class="sn">01</span><h2 class="st" data-i="s.exp">Areas of Expertise</h2></div>
+  <div class="exp-grid rv">
+    <div class="exp-card"><div class="cn">01</div><div class="cl" data-i="e1.l">/ AI Product</div><div class="ct" data-i="e1.t">Applied Artificial Intelligence</div><p class="cd" data-i="e1.d">Production AI systems for risk and compliance. LLM orchestration, agent architecture, MLOps and LLMOps infrastructure for financial institutions.</p><div class="tags"><span class="tag">LLM</span><span class="tag">Agents SDK</span><span class="tag">LangGraph</span><span class="tag">MLOps</span></div></div>
+    <div class="exp-card"><div class="cn">02</div><div class="cl" data-i="e2.l">/ Quant Finance</div><div class="ct" data-i="e2.t">Quantitative Risk</div><p class="cd" data-i="e2.d">VaR, Expected Shortfall, WHS with exponential weighting, IRB credit models under CBR regulation. Derivatives pricing and stochastic processes.</p><div class="tags"><span class="tag">VaR / ES</span><span class="tag">Basel III</span><span class="tag">ПВР</span><span class="tag">Monte Carlo</span></div></div>
+    <div class="exp-card"><div class="cn">03</div><div class="cl" data-i="e3.l">/ Data Science</div><div class="ct" data-i="e3.t">Statistical Modelling</div><p class="cd" data-i="e3.d">Bayesian inference, GARCH/ARIMA econometrics, market microstructure modelling, cointegration, and forecast uncertainty propagation.</p><div class="tags"><span class="tag">Bayesian</span><span class="tag">GARCH</span><span class="tag">Python</span><span class="tag">Time Series</span></div></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="padding-top:0">
+  <div class="sh rv"><span class="sn">02</span><h2 class="st" data-i="s.proj">Selected Projects</h2></div>
+  <div class="proj-list rv">
+    <a href="#" class="proj-item"><div class="pn">001</div><div><div class="pt" data-i="p1.n">Market Intelligence Platform</div><div class="pd" data-i="p1.d">Russian-language AlphaSense analogue — NLP over ГИРБО, e-disclosure & corporate reports</div></div><div><div class="py">2025–2026</div><div class="pbadge" data-i="p.ip">In Progress</div></div><div class="parr">→</div></a>
+    <a href="#" class="proj-item"><div class="pn">002</div><div><div class="pt" data-i="p2.n">Personal Finance App</div><div class="pd" data-i="p2.d">Goal-first savings & wealth diagnostics for the Russian retail market</div></div><div class="py">2026</div><div class="parr">→</div></a>
+    <a href="#" class="proj-item"><div class="pn">003</div><div><div class="pt" data-i="p3.n">WHS Risk Engine</div><div class="pd" data-i="p3.d">Weighted Historical Simulation with lambda cross-validation and pinball loss optimisation</div></div><div class="py">2025</div><div class="parr">→</div></a>
+    <a href="#" class="proj-item"><div class="pn">004</div><div><div class="pt" data-i="p4.n">QuantFin Curriculum</div><div class="pd" data-i="p4.d">Advanced derivatives, microstructure, and risk measures course design and delivery</div></div><div class="py">2024–2025</div><div class="parr">→</div></a>
+  </div>
+</section>
+
+<!-- PRESS -->
+<section id="press" style="padding-top:0">
+  <div class="sh rv"><span class="sn">03</span><h2 class="st" data-i="s.press">In the Press</h2></div>
+  <div class="rv" id="PRESS_ROOT"></div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-s">
+  <p class="quote-t" data-i="q.t">"The map is not the territory — but a precise map built on honest data is worth more than any intuition."</p>
+  <div class="quote-a" data-i="q.a">On modelling philosophy</div>
+</div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sh rv"><span class="sn">04</span><h2 class="st" data-i="s.xp">Experience</h2></div>
+  <div class="xp-grid rv">
+    <div><div class="xp-label" data-i="xp.lb">Background</div><p class="xp-sum" data-i="xp.sum">Seven years working at the intersection of quantitative methods and financial technology — from academic research to production AI systems at scale.</p></div>
+    <div class="xp-list">
+      <div class="xp-item"><div class="xp-per">2023<br>— Present</div><div><div class="xp-role" data-i="x1.r">AI Product Development Lead</div><div class="xp-co">T-Bank (Tinkoff) · Risk Division</div><p class="xp-desc" data-i="x1.d">Building applied AI for risk and compliance. Defining ML engineering roles, LLMOps infrastructure, IRB model implementation under CBR regulatory requirements.</p></div></div>
+      <div class="xp-item"><div class="xp-per">2024<br>— 2025</div><div><div class="xp-role" data-i="x2.r">Course Instructor</div><div class="xp-co">QuantFin</div><p class="xp-desc" data-i="x2.d">Designed and delivered advanced curriculum spanning stochastic processes, derivatives pricing, market microstructure, GARCH/ARIMA, and risk measures.</p></div></div>
+      <div class="xp-item"><div class="xp-per">2026</div><div><div class="xp-role" data-i="x3.r">Co-Founder</div><div class="xp-co">Market Intelligence Venture</div><p class="xp-desc" data-i="x3.d">Building MVP for Russian-language financial intelligence platform. NLP over regulatory filings and corporate reports. Investor-ready framing.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="ct-s" id="contact">
+  <div class="rv"><h2 class="ct-h" data-i="ct.h">Let's build<br><em>something</em><br>precise.</h2><p class="ct-note" data-i="ct.n">Open to select collaborations in quantitative finance, AI product development, and fintech ventures.</p></div>
+  <div class="ct-links rv">
+    <a href="mailto:m@example.com" class="ct-link"><div><div class="ct-lbl">Email</div><div class="ct-val">m.korobeynikov@tbank.ru</div></div><span class="ct-arr">→</span></a>
+    <a href="#" class="ct-link"><div><div class="ct-lbl">Telegram</div><div class="ct-val">@mikhail_k</div></div><span class="ct-arr">→</span></a>
+    <a href="#" class="ct-link"><div><div class="ct-lbl">LinkedIn</div><div class="ct-val">linkedin.com/in/mikhailk</div></div><span class="ct-arr">→</span></a>
+    <a href="#" class="ct-link"><div><div class="ct-lbl" data-i="ct.loc">Location</div><div class="ct-val">Moscow, Russia</div></div><span class="ct-arr">→</span></a>
+  </div>
+</div>
+
+<footer>
+  <div class="fc">© 2026 — <span data-i="ft.c">All rights reserved</span></div>
+  <div class="fl">M · K</div>
+  <div class="fr">Moscow · Russia</div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════
+   PRESS DATA
+   Добавляй новые объекты в этот массив.
+   featured:true — первый (большой) блок.
+   Максимум 2 featured (второй идёт в боковую колонку).
+══════════════════════════════════════ */
+const PRESS = [
+  {
+    source:'Коммерсантъ',
+    type_en:'Interview', type_ru:'Интервью',
+    title_en:'AI in Banking Risk: Building Systems That Learn',
+    title_ru:'ИИ в банковском риске: системы, которые учатся',
+    quote_en:'"The question is not whether AI will replace the risk analyst — it will augment them, raising the bar for rigour and precision."',
+    quote_ru:'«Вопрос не в том, заменит ли ИИ риск-аналитика — он его усилит, задав новую планку точности».',
+    date:'Март 2026', url:'https://example.com', featured:true,
+  },
+  {
+    source:'Forbes Russia',
+    type_en:'Rating', type_ru:'Рейтинг',
+    title_en:'Top-1000 Russian Managers — Finance & Technology',
+    title_ru:'Топ-1000 менеджеров России — финансы и технологии',
+    date:'Февраль 2026',
+    url:'https://mbrus.ru/the-brand/news/natalya-koroleva-stala-laureatom-reitinga-top1000-rossiiskih-menedzherov',
+    featured:true,
+  },
+  {
+    source:'Seres A-Drive',
+    type_en:'Interview', type_ru:'Интервью',
+    title_en:'Conversation on AI, Risk Models, and the Future of Fintech',
+    title_ru:'Разговор об ИИ, риск-моделях и будущем финтеха',
+    date:'Январь 2026',
+    url:'https://seres-adrive.ru/brand/events/media-about-us/intervy-natalia-koroleva-avtokonservi/',
+  },
+  {
+    source:'РБК',
+    type_en:'Article', type_ru:'Статья',
+    title_en:'How Russian Banks Are Implementing AI-Driven Risk Systems',
+    title_ru:'Как российские банки внедряют риск-системы на ИИ',
+    date:'Декабрь 2025', url:'https://example.com',
+  },
+  {
+    source:'Ведомости',
+    type_en:'Column', type_ru:'Колонка',
+    title_en:'IRB Models Under CBR: What Goes Wrong and How to Fix It',
+    title_ru:'ПВР-модели под ЦБ: что идёт не так и как исправить',
+    date:'Ноябрь 2025', url:'https://example.com',
+  },
+  {
+    source:'Frank RG',
+    type_en:'Article', type_ru:'Статья',
+    title_en:'The State of Quantitative Risk in Russian Banking',
+    title_ru:'Количественный риск в российском банкинге: состояние рынка',
+    date:'Октябрь 2025', url:'https://example.com',
+  },
+  {
+    source:'Банкир.ру',
+    type_en:'Interview', type_ru:'Интервью',
+    title_en:'Bayesian Methods in Credit Risk: A Practitioner\'s View',
+    title_ru:'Байесовские методы в кредитном риске: взгляд практика',
+    date:'Сентябрь 2025', url:'https://example.com',
+  },
+  {
+    source:'TechCrunch Russia',
+    type_en:'Article', type_ru:'Статья',
+    title_en:'LLM-Driven Compliance: Inside T-Bank\'s Risk AI Stack',
+    title_ru:'LLM в комплаенсе: внутри AI-стека Т-Банка',
+    date:'Август 2025', url:'https://example.com',
+  },
+];
+
+const VISIBLE_INITIAL = 6; // карточек в сетке изначально (не считая featured блок)
+
+/* ══════════════════════════════════════
+   TRANSLATIONS
+══════════════════════════════════════ */
+const T = {
+  en:{
+    'nav.exp':'Expertise','nav.proj':'Projects','nav.press':'Press','nav.xp':'Experience','nav.ct':'Contact',
+    'hero.eye':'AI Product · Quant Finance · Risk',
+    'hero.desc':'Building intelligent risk systems at the intersection of quantitative finance and applied AI. Currently leading AI product development at T-Bank, Moscow.',
+    'hero.cta1':'View Work','hero.cta2':'Get in Touch →','hero.scroll':'Scroll',
+    's.exp':'Areas of Expertise','s.proj':'Selected Projects','s.press':'In the Press','s.xp':'Experience',
+    'e1.l':'/ AI Product','e1.t':'Applied Artificial Intelligence','e1.d':'Production AI systems for risk and compliance. LLM orchestration, agent architecture, MLOps and LLMOps infrastructure for financial institutions.',
+    'e2.l':'/ Quant Finance','e2.t':'Quantitative Risk','e2.d':'VaR, Expected Shortfall, WHS with exponential weighting, IRB credit models under CBR regulation. Derivatives pricing and stochastic processes.',
+    'e3.l':'/ Data Science','e3.t':'Statistical Modelling','e3.d':'Bayesian inference, GARCH/ARIMA econometrics, market microstructure modelling, cointegration, and forecast uncertainty propagation.',
+    'p1.n':'Market Intelligence Platform','p1.d':'Russian-language AlphaSense analogue — NLP over ГИРБО, e-disclosure & corporate reports',
+    'p2.n':'Personal Finance App','p2.d':'Goal-first savings & wealth diagnostics for the Russian retail market',
+    'p3.n':'WHS Risk Engine','p3.d':'Weighted Historical Simulation with lambda cross-validation and pinball loss optimisation',
+    'p4.n':'QuantFin Curriculum','p4.d':'Advanced derivatives, microstructure, and risk measures course design and delivery',
+    'p.ip':'In Progress',
+    'press.feat':'Featured Publication','press.more':'Show more publications','press.collapse':'Show less',
+    'q.t':'"The map is not the territory — but a precise map built on honest data is worth more than any intuition."','q.a':'On modelling philosophy',
+    'xp.lb':'Background','xp.sum':'Seven years working at the intersection of quantitative methods and financial technology — from academic research to production AI systems at scale.',
+    'x1.r':'AI Product Development Lead','x1.d':'Building applied AI for risk and compliance. Defining ML engineering roles, LLMOps infrastructure, IRB model implementation under CBR regulatory requirements.',
+    'x2.r':'Course Instructor','x2.d':'Designed and delivered advanced curriculum spanning stochastic processes, derivatives pricing, market microstructure, GARCH/ARIMA, and risk measures.',
+    'x3.r':'Co-Founder','x3.d':'Building MVP for Russian-language financial intelligence platform. NLP over regulatory filings and corporate reports. Investor-ready framing.',
+    'ct.h':'Let\'s build<br><em>something</em><br>precise.','ct.n':'Open to select collaborations in quantitative finance, AI product development, and fintech ventures.','ct.loc':'Location',
+    'ft.c':'All rights reserved',
+    'mq':['Applied AI','Quantitative Risk','Bayesian Inference','Market Intelligence','LLM Orchestration','Risk Modelling','T-Bank','QuantFin'],
+  },
+  ru:{
+    'nav.exp':'Экспертиза','nav.proj':'Проекты','nav.press':'Пресса','nav.xp':'Опыт','nav.ct':'Контакт',
+    'hero.eye':'AI-продукт · Квант. финансы · Риск',
+    'hero.desc':'Строю интеллектуальные системы управления риском на стыке количественных финансов и прикладного ИИ. Руководитель AI-продукта в Т-Банке, Москва.',
+    'hero.cta1':'Смотреть работы','hero.cta2':'Связаться →','hero.scroll':'Скролл',
+    's.exp':'Области экспертизы','s.proj':'Избранные проекты','s.press':'В прессе','s.xp':'Опыт',
+    'e1.l':'/ AI-продукт','e1.t':'Прикладной искусственный интеллект','e1.d':'Производственные AI-системы для риска и комплаенса. Оркестрация LLM, агентные архитектуры, MLOps и LLMOps инфраструктура для финансовых организаций.',
+    'e2.l':'/ Квант. финансы','e2.t':'Количественный риск','e2.d':'VaR, Expected Shortfall, WHS с экспоненциальными весами, ПВР-модели. Ценообразование деривативов и стохастические процессы.',
+    'e3.l':'/ Data Science','e3.t':'Статистическое моделирование','e3.d':'Байесовский вывод, GARCH/ARIMA, микроструктура рынка, коинтеграция и распространение неопределённости прогнозов.',
+    'p1.n':'Платформа рыночной аналитики','p1.d':'Русскоязычный аналог AlphaSense — NLP по ГИРБО, раскрытию и корпоративным отчётам',
+    'p2.n':'Приложение личных финансов','p2.d':'Целевой подход к сбережениям и диагностика капитала для российского рынка',
+    'p3.n':'Риск-движок WHS','p3.d':'Взвешенное историческое симулирование с оптимизацией λ и pinball loss',
+    'p4.n':'Курс QuantFin','p4.d':'Разработка и преподавание курса по деривативам, микроструктуре и мерам риска',
+    'p.ip':'В разработке',
+    'press.feat':'Главная публикация','press.more':'Показать ещё публикации','press.collapse':'Свернуть',
+    'q.t':'"Карта — не территория, но точная карта, построенная на честных данных, стоит любой интуиции."','q.a':'О философии моделирования',
+    'xp.lb':'Биография','xp.sum':'Семь лет на стыке количественных методов и финансовых технологий — от академических исследований до производственных AI-систем.',
+    'x1.r':'Руководитель AI-продукта','x1.d':'Разработка прикладного ИИ для риска и комплаенса. Архитектура ML-ролей, LLMOps, внедрение ПВР-моделей по требованиям ЦБ РФ.',
+    'x2.r':'Преподаватель курса','x2.d':'Разработка и чтение курса по стохастическим процессам, ценообразованию деривативов, микроструктуре рынка, GARCH/ARIMA и мерам риска.',
+    'x3.r':'Со-основатель','x3.d':'Создание MVP русскоязычной платформы финансовой аналитики. NLP по регуляторным и корпоративным источникам. Позиционирование под инвесторов.',
+    'ct.h':'Построим<br><em>что-то</em><br>точное.','ct.n':'Открыт к избранному сотрудничеству в области количественных финансов, AI-продуктов и финтех-венчуров.','ct.loc':'Местоположение',
+    'ft.c':'Все права защищены',
+    'mq':['Прикладной ИИ','Количественный риск','Байесовский вывод','Рыночная аналитика','LLM-оркестрация','Риск-моделирование','Т-Банк','QuantFin'],
+  }
+};
+
+let LANG = 'en';
+let pressExpanded = false;
+
+/* ── render press ── */
+function renderPress(lang) {
+  const t = T[lang];
+  const root = document.getElementById('PRESS_ROOT');
+  const featured = PRESS.filter(p=>p.featured);
+  const cards = PRESS.filter(p=>!p.featured);
+
+  const typeKey = lang==='ru' ? 'type_ru' : 'type_en';
+  const titleKey = lang==='ru' ? 'title_ru' : 'title_en';
+  const quoteKey = lang==='ru' ? 'quote_ru' : 'quote_en';
+
+  const featMain = featured[0];
+  const featSide = featured[1];
+
+  // ── hero block ──
+  const heroHTML = `
+    <div class="press-hero">
+      <a href="${featMain.url}" target="_blank" class="press-hero-main">
+        <div class="ph-label">${t['press.feat']}</div>
+        <div class="ph-source">${featMain.source}</div>
+        <div class="ph-title">${featMain[titleKey]}</div>
+        ${featMain[quoteKey]?`<div class="ph-quote">${featMain[quoteKey]}</div>`:''}
+        <div class="ph-foot"><div class="ph-date">${featMain.date}</div><div class="ph-arr">→</div></div>
+      </a>
+      <div class="press-hero-side">
+        ${featSide ? `
+        <a href="${featSide.url}" target="_blank" class="press-side-card">
+          <div>
+            <div class="psc-source">${featSide.source}</div>
+            <div class="psc-title">${featSide[titleKey]}</div>
+          </div>
+          <div class="psc-foot">
+            <div class="psc-date">${featSide.date}</div>
+            <div class="psc-type">${featSide[typeKey]}</div>
+          </div>
+        </a>` : ''}
+        <div style="flex:1;background:var(--bg-alt);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;padding:24px;">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--line);">${PRESS.length}</span>
         </div>
-      </section>
+      </div>
+    </div>`;
 
-      <section class="grid" id="about">
-        <article class="card">
-          <h2>Быстрый старт</h2>
-          <p>
-            Сайт работает как есть: корневой <code>index.html</code>, отдельные
-            стили и никаких зависимостей.
-          </p>
-        </article>
+  // ── cards grid ──
+  const cardsHTML = `
+    <div class="press-grid" id="PRESS_GRID">
+      ${cards.map((p,i)=>`
+        <a href="${p.url}" target="_blank" class="press-grid-card${i>=VISIBLE_INITIAL?' hidden':''}">
+          <div class="pgc-top">
+            <div class="pgc-source">${p.source}</div>
+            <div class="pgc-type">${p[typeKey]}</div>
+          </div>
+          <div class="pgc-title">${p[titleKey]}</div>
+          <div class="pgc-bot">
+            <div class="pgc-date">${p.date}</div>
+            <div class="pgc-arr">→</div>
+          </div>
+        </a>
+      `).join('')}
+    </div>
+    ${cards.length > VISIBLE_INITIAL ? `
+    <div class="press-more-wrap">
+      <button class="press-more-btn" id="PRESS_MORE">${t['press.more']} (${cards.length - VISIBLE_INITIAL})</button>
+    </div>` : ''}
+  `;
 
-        <article class="card">
-          <h2>Под GitHub Pages</h2>
-          <p>
-            Подходит для публикации из ветки <code>main</code> прямо из корня
-            репозитория.
-          </p>
-        </article>
+  root.innerHTML = heroHTML + cardsHTML;
 
-        <article class="card">
-          <h2>Легко заменить</h2>
-          <p>
-            Тексты, ссылки и цвета вынесены максимально просто, чтобы быстро
-            переделать под себя.
-          </p>
-        </article>
-      </section>
-    </main>
+  // more button
+  const moreBtn = document.getElementById('PRESS_MORE');
+  if(moreBtn) {
+    moreBtn.addEventListener('click', () => {
+      pressExpanded = !pressExpanded;
+      document.querySelectorAll('.press-grid-card.hidden').forEach(el => el.classList.remove('hidden'));
+      moreBtn.classList.add('hidden');
+    });
+  }
 
-    <footer class="footer">
-      <p>© 2026 Dummy Site</p>
-    </footer>
-  </body>
+  hookCursor();
+}
+
+/* ── apply lang ── */
+function applyLang(lang) {
+  LANG = lang;
+  document.documentElement.setAttribute('data-lang', lang);
+  const t = T[lang];
+  document.querySelectorAll('[data-i]').forEach(el => {
+    const k = el.getAttribute('data-i');
+    if(t[k] !== undefined) el.innerHTML = t[k];
+  });
+  document.querySelectorAll('[data-lb]').forEach(b => b.classList.toggle('on', b.getAttribute('data-lb')===lang));
+  // marquee
+  const mq = T[lang].mq;
+  const doubled = [...mq,...mq];
+  document.getElementById('MQ').innerHTML = doubled.map(s=>`<div class="mq-item"><span>${s}</span><div class="mq-dot"></div></div>`).join('');
+  renderPress(lang);
+}
+
+/* ── theme ── */
+document.getElementById('TB').addEventListener('click', ()=>{
+  const th = document.documentElement.getAttribute('data-theme');
+  const next = th==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+});
+
+/* ── lang btns ── */
+document.querySelectorAll('[data-lb]').forEach(b => b.addEventListener('click', ()=> applyLang(b.getAttribute('data-lb'))));
+
+/* ── cursor ── */
+const C = document.getElementById('C'), R = document.getElementById('R');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+function hookCursor(){
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>R.classList.add('h'));
+    el.addEventListener('mouseleave',()=>R.classList.remove('h'));
+  });
+}
+(function a(){C.style.left=mx+'px';C.style.top=my+'px';rx+=(mx-rx)*.13;ry+=(my-ry)*.13;R.style.left=rx+'px';R.style.top=ry+'px';requestAnimationFrame(a);})();
+
+/* ── scroll reveal ── */
+const obs = new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');}),{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* ── init ── */
+const saved = localStorage.getItem('theme')||'dark';
+document.documentElement.setAttribute('data-theme', saved);
+applyLang('en');
+hookCursor();
+</script>
+</body>
 </html>
